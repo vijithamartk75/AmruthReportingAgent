@@ -14,10 +14,11 @@ driver = os.getenv("DB_DRIVER")
 # Encode special characters like @, #, $, %
 encoded_password = quote_plus(password)
 
+
 connection_string = (
     f"mssql+pymssql://{username}:{encoded_password}@{server}:1433/{database}"
-    f"?encrypt=yes&trustservercertificate=no"
 )
+
 
 # connection_string = (
 #     f"mssql+pyodbc://{username}:{encoded_password}@{server}:1433/{database}"
@@ -25,3 +26,4 @@ connection_string = (
 # )
 
 engine = create_engine(connection_string, echo=False)
+
