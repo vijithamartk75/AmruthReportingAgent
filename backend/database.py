@@ -16,6 +16,7 @@ encoded_password = quote_plus(password)
 
 connection_string = (
     f"mssql+pymssql://{username}:{encoded_password}@{server}:1433/{database}"
+    f"?encrypt=yes&trustservercertificate=no"
 )
 
 # connection_string = (
