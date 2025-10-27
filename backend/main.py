@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
-from database import engine  # ✅ IMPORT your ready-to-use connection here
+from database import engine
 import re
 
 app = FastAPI(title="Sales Analytics & AI Agent")
