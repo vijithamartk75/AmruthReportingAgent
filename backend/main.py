@@ -22,7 +22,7 @@ def home():
 @app.get("/sales/by-date")
 def get_sales_by_date(date: str = Query(..., description="Date in YYYY-MM-DD format")):
     query = text("""
-        SELECT COUNT(*) AS invoice_count, SUM(NetAmt) AS total_sales
+        SELECT COUNT(distinct Invno) AS invoice_count, SUM(NetAmt) AS total_sales
         FROM Invtotal
         WHERE 
             CAST(InvDt AS DATE) = CAST(:date AS DATE)
@@ -49,7 +49,7 @@ async def chat(request: Request):
         with engine.connect() as conn:
             if "today" in text_input:
                 query = text("""
-                    SELECT COUNT(*) AS invoice_count, SUM(NetAmt) AS total_sales
+                    SELECT COUNT(distinct Invno) AS invoice_count, SUM(NetAmt) AS total_sales
                     FROM Invtotal
                     WHERE CAST(InvDt AS DATE) = CAST(GETDATE() AS DATE)
                     AND (Cancelled = 0 OR Cancelled IS NULL);
@@ -62,7 +62,7 @@ async def chat(request: Request):
             elif date_match:
                 date = date_match.group(0)
                 query = text("""
-                    SELECT COUNT(*) AS invoice_count, SUM(NetAmt) AS total_sales
+                    SELECT COUNT(distinct Invno) AS invoice_count, SUM(NetAmt) AS total_sales
                     FROM Invtotal
                     WHERE CAST(InvDt AS DATE) = CAST(:date AS DATE)
                     AND (Cancelled = 0 OR Cancelled IS NULL);
@@ -74,7 +74,7 @@ async def chat(request: Request):
 
             elif "last 7 days" in text_input or "weekly" in text_input:
                 query = text("""
-                    SELECT COUNT(*) AS invoice_count, SUM(NetAmt) AS total_sales
+                    SELECT COUNT(distinct Invno) AS invoice_count, SUM(NetAmt) AS total_sales
                     FROM Invtotal
                     WHERE InvDt >= CAST(DATEADD(DAY, -7, GETDATE()) AS DATE)
                     AND (Cancelled = 0 OR Cancelled IS NULL);
